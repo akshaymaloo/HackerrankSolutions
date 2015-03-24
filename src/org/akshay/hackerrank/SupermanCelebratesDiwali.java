@@ -13,24 +13,25 @@ public class SupermanCelebratesDiwali {
    * @param buildingLayout building vs people layout
    * @param building current building
    * @param floor current floor
-   * @param i floors superman looses when he jumps across buildings
+   * @param heightLost floors superman looses when he jumps across buildings
    * @param peopleSaved no of people superman has saved
    * @return
    */
-  private static int calculateMaxPeopleSaved(final int[][] buildingLayout, int building, int floor, final int i, int peopleSaved) {
-    if(floor <= 0 || building < 0 || building >= buildingLayout.length) return peopleSaved;
+  private static int calculateMaxPeopleSaved(final int[][] buildingLayout, int building, int floor, final int heightLost, int[][] maxPeopleSaved, int peopleSaved) {
+    if(floor <= 0 || building < 0 || building >= buildingLayout.length) return 0;
+    if(maxPeopleSaved[building][floor] != 0) return maxPeopleSaved[building][floor]; // Use cache
 
-    peopleSaved += buildingLayout[building][floor];
-
-    int jumpDown = calculateMaxPeopleSaved(buildingLayout, building, floor-1, i, peopleSaved);
+    int jumpDown = calculateMaxPeopleSaved(buildingLayout, building, floor-1, heightLost, maxPeopleSaved, peopleSaved);
     int maxJumpBuilding = Integer.MIN_VALUE;
     for (int j = 0; j < buildingLayout.length; j++) {
       if(j == building) continue;
-      int jumpBuilding = calculateMaxPeopleSaved(buildingLayout, j, floor-i, i, peopleSaved);
+      int jumpBuilding = calculateMaxPeopleSaved(buildingLayout, j, floor-heightLost, heightLost, maxPeopleSaved, peopleSaved);
       if(jumpBuilding > maxJumpBuilding) maxJumpBuilding = jumpBuilding;
     }
 
-    return max(jumpDown, maxJumpBuilding, 0);
+    peopleSaved += buildingLayout[building][floor];
+    maxPeopleSaved[building][floor] = max(jumpDown + peopleSaved, maxJumpBuilding + peopleSaved, 0);
+    return maxPeopleSaved[building][floor];
   }
 
   /**
@@ -55,20 +56,24 @@ public class SupermanCelebratesDiwali {
         buildingLayout[j][in.nextInt()]++;
       }
     }
+    // Find the max number of people superman can save
+    int[][] maxPeopleSaved = new int[n][h+1];
+    int maxPeopleSavedValue = Integer.MIN_VALUE;
+    for (int j = 0; j < n; j++) {
+      int tempMaxPeopleSavedValue = calculateMaxPeopleSaved(buildingLayout, j, h, i, maxPeopleSaved, 0);
+      if(tempMaxPeopleSavedValue > maxPeopleSavedValue) maxPeopleSavedValue = tempMaxPeopleSavedValue;
+    }
 
-//    for (int j = 0; j < n; j++) {
-//      for (int k = 0; k < h+1; k++) {
-//        System.out.print(buildingLayout[j][k] + " ");
+//    // Display
+//    System.out.println();
+//    for (int j = 0; j < maxPeopleSaved.length; j++) {
+//      for (int k = 0; k < maxPeopleSaved[0].length; k++) {
+//        System.out.print(maxPeopleSaved[j][k] + " ");
 //      }
 //      System.out.println();
 //    }
-
-    // Find the max number of people superman can save
-    int maxPeopleSaved = Integer.MIN_VALUE;
-    for (int j = 0; j < buildingLayout.length; j++) {
-      int peopleSaved = calculateMaxPeopleSaved(buildingLayout, j, h, i, 0);
-      if(peopleSaved > maxPeopleSaved) maxPeopleSaved = peopleSaved;
-    }
-    System.out.println(maxPeopleSaved);
+//    //
+//    System.out.println();
+    System.out.println(maxPeopleSavedValue);
   }
 }
