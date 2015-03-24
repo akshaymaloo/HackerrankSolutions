@@ -7,8 +7,7 @@ package org.akshay.hackerrank;
 // Test class to test stuff out.
 public class TestX {
   public static void main(String[] args) {
-    System.out.println(0%5);
-    System.out.println(0%50);
-    System.out.println(0%10);
+    System.out.println(0>-1);
+    System.out.println(-3>-1);
   }
 }
