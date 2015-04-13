@@ -13,7 +13,7 @@ public class StockMaximize {
    * @param z
    * @return
    */
-  private static int max(int x, int y, int z) {
+  private static long max(long x, long y, long z) {
     return Math.max(x, Math.max(y, z));
   }
 
@@ -26,7 +26,7 @@ public class StockMaximize {
    * @param currentIndex
    * @return
    */
-  private static int maximumProfitRecursive(int[] priceArray, int shares, int price, int profit, int currentIndex) {
+  private static long maximumProfitRecursive(int[] priceArray, int shares, int price, long profit, int currentIndex) {
     if (currentIndex >= priceArray.length) return profit;
 
     return max(
@@ -34,6 +34,20 @@ public class StockMaximize {
         (shares == 0 || profit < 0) ? 0 : maximumProfitRecursive(priceArray, 0, 0, profit + ((shares * priceArray[currentIndex]) - price), currentIndex), // sell
         maximumProfitRecursive(priceArray, shares + 1, price + priceArray[currentIndex], profit, currentIndex + 1) // buy
     );
+  }
+
+  /**
+   * Find max profit.
+   * @param priceArray
+   * @return
+   */
+  private static long maximumProfit(int[] priceArray) {
+    long futureStockPrice = 0, profit = 0;
+    for (int i = priceArray.length - 1; i >= 0; --i) {
+      futureStockPrice = max(futureStockPrice, priceArray[i], 0);
+      profit += (futureStockPrice - priceArray[i]);
+    }
+    return profit;
   }
 
   public static void main(String[] args) {
@@ -46,7 +60,8 @@ public class StockMaximize {
       for (int j = 0; j < n; j++) {
         priceArray[j] = in.nextInt();
       }
-      System.out.println(maximumProfitRecursive(priceArray, 0, 0, 0, 0));
+      //System.out.println(maximumProfitRecursive(priceArray, 0, 0, 0, 0));
+      System.out.println(maximumProfit(priceArray));
     }
   }
 }
