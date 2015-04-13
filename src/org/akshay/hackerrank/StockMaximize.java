@@ -5,6 +5,8 @@ import java.util.Scanner;
 /**
  * Created by aksh7576 on 4/6/15.
  */
+
+// Problem: https://www.hackerrank.com/challenges/stockmax
 public class StockMaximize {
   /**
    * Find Max.
