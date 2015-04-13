@@ -56,8 +56,10 @@ public class SupermanCelebratesDiwali {
         buildingLayout[j][in.nextInt()]++;
       }
     }
+
     // Find the max number of people superman can save
-    int[][] maxPeopleSaved = new int[n][h+1];
+    long startTime = System.currentTimeMillis();
+    int[][] maxPeopleSaved = new int[n][h+1]; // Cache
     int maxPeopleSavedValue = Integer.MIN_VALUE;
     for (int j = 0; j < n; j++) {
       int tempMaxPeopleSavedValue = calculateMaxPeopleSaved(buildingLayout, j, h, i, maxPeopleSaved, 0);
@@ -75,5 +77,8 @@ public class SupermanCelebratesDiwali {
 //    //
 //    System.out.println();
     System.out.println(maxPeopleSavedValue);
+    long stopTime = System.currentTimeMillis();
+    long elapsedTime = stopTime - startTime;
+    System.out.println(elapsedTime);
   }
 }
