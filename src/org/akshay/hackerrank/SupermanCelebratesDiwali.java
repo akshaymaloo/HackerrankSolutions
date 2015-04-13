@@ -58,7 +58,6 @@ public class SupermanCelebratesDiwali {
     }
 
     // Find the max number of people superman can save
-    long startTime = System.currentTimeMillis();
     int[][] maxPeopleSaved = new int[n][h+1]; // Cache
     int maxPeopleSavedValue = Integer.MIN_VALUE;
     for (int j = 0; j < n; j++) {
@@ -77,8 +76,5 @@ public class SupermanCelebratesDiwali {
 //    //
 //    System.out.println();
     System.out.println(maxPeopleSavedValue);
-    long stopTime = System.currentTimeMillis();
-    long elapsedTime = stopTime - startTime;
-    System.out.println(elapsedTime);
   }
 }
