@@ -50,76 +50,32 @@ public class DisasterRecovery {
    * @param hour
    * @return
    */
-  private static long calculateMinCost(int[] costArray, int start, int end, int hour) {
-    if(start > end)
+  private static long calculateMinCost(int[] costArray, int start, int end, int hour, long[][] calculatedCost) {
+    if (start > end)
       return 0;
+    if ((start >= 0 && start <= costArray.length && end >= 0 && end <= costArray.length) && calculatedCost[start][end] != 0)
+      return calculatedCost[start][end];
 
-    long costStart = (costArray[start] * hour) + calculateMinCost(costArray, start + 1, end, hour + 1);
-    long costEnd = (costArray[end] * hour) + calculateMinCost(costArray, start, end - 1, hour + 1);
+    long costStart = (costArray[start] * hour) + calculateMinCost(costArray, start + 1, end, hour + 1, calculatedCost);
+    long costEnd = (costArray[end] * hour) + calculateMinCost(costArray, start, end - 1, hour + 1, calculatedCost);
+
+    calculatedCost[start][end] = Math.min(costStart, costEnd);
 
     return Math.min(costStart, costEnd);
   }
 
-  public static void DPMain() {
-    Scanner sc = new Scanner(System.in);
-    // Read no of computers
-    int N = sc.nextInt();
-    int[] costArray = new int[N];
-    // Read the cost
-    for (int i=0; i < N; i++) {
-      costArray[i] = sc.nextInt();
-    }
-
-    System.out.println(calculateMinCost(costArray, 0, N - 1, 1));
-  }
-
-  public static int findMaxPos(int[] input) {
-    int maxPos = 0;
-    for (int j = 1; j < input.length - 1; j++) {
-      if(input[j] > input[maxPos])
-        maxPos = j;
-    }
-    return maxPos;
-  }
-
-  public static int findSum(int[] input, int start, int end) {
-    int sum = 0;
-    for (int i = start; i <= end; i++) {
-      sum += input[i];
-    }
-    return sum;
-  }
-
-  public static void RecursiveMain() {
-    Scanner sc = new Scanner(System.in);
-    // Read no of computers
-    int N = sc.nextInt();
-    int[] costArray = new int[N];
-    // Read the cost
-    for (int i=0; i < N; i++) {
-      costArray[i] = sc.nextInt();
-    }
-    int start = 0;
-    int end = N - 1;
-    int hour = 1;
-    long cost = 0;
-    // Calculate the cost
-    while (start <= end) {
-      if (costArray[start] <= costArray[end]) {
-        cost += hour * costArray[end];
-        end--;
-      } else {
-        cost += hour * costArray[start];
-        start++;
-      }
-      hour++;
-    }
-    System.out.println(cost);
-  }
-
   public static void main(String[] args) {
-    RecursiveMain();
-    //DPMain();
+    Scanner sc = new Scanner(System.in);
+    // Read no of computers
+    int N = sc.nextInt();
+    int[] costArray = new int[N];
+    // Read the cost
+    for (int i = 0; i < N; i++) {
+      costArray[i] = sc.nextInt();
+    }
+
+    long[][] calculatedCost = new long[N + 1][N + 1];
+    System.out.println(calculateMinCost(costArray, 0, N - 1, 1, calculatedCost));
   }
 }
 
@@ -128,9 +84,15 @@ public class DisasterRecovery {
 
 Test cases:
 
+4
+5 1 4 3
+27
+
 9
 9 1 5 8 7 1000 2 4 6
 4212
 
-
+22
+41 5 13 2 38 22 6 20 7 30 46 10 19 49 40 50 14 37 11 43 12 23
+5329
 */
