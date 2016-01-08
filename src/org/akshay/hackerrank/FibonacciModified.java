@@ -52,8 +52,7 @@ public class FibonacciModified {
     if (level == N) {
       System.out.println(b);
     } else {
-      BigInteger c = b.pow(2).add(a);
-      fibonacciModified(b, c, level + 1, N);
+      fibonacciModified(b, b.pow(2).add(a), level + 1, N);
     }
   }
 
@@ -64,10 +63,7 @@ public class FibonacciModified {
     int b = sc.nextInt();
     int N = sc.nextInt();
 
-    BigInteger aBI = BigInteger.valueOf(a);
-    BigInteger bBI = BigInteger.valueOf(b);
-
     // Calculate the Nth number
-    fibonacciModified(aBI, bBI, 2, N);
+    fibonacciModified(BigInteger.valueOf(a), BigInteger.valueOf(b), 2, N);
   }
 }
